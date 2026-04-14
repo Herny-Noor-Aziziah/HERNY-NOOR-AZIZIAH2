@@ -14,7 +14,7 @@
   <div class="max-w-4xl mx-auto p-6">
     <div class="bg-white shadow-xl rounded-3xl p-8">
       <h1 class="text-3xl font-bold text-center mb-2 text-blue-700">Formulir Pengumpulan Data</h1>
-      <p class="text-center text-gray-600 mb-8">Demografi • Bank • Transaksi Keuangan</p>
+      <p class="text-center text-gray-600 mb-8">Demografi • Data Bank • Transaksi Keuangan</p>
 
       <form id="dataForm" onsubmit="handleSubmit(event)">
         <!-- DATA DEMOGRAFI -->
@@ -44,14 +44,9 @@
             <label class="block text-sm font-medium mb-1">Pendidikan</label>
             <input list="pendidikan_list" id="pendidikan" required class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-600" placeholder="Ketik atau pilih...">
             <datalist id="pendidikan_list">
-              <option value="SD / Sederajat">
-              <option value="SMP / Sederajat">
-              <option value="SMA / SMK / Sederajat">
-              <option value="Diploma (D1-D4)">
-              <option value="Sarjana (S1)">
-              <option value="Magister (S2)">
-              <option value="Doktor (S3)">
-              <option value="Lainnya">
+              <option value="SD / Sederajat"><option value="SMP / Sederajat"><option value="SMA / SMK / Sederajat">
+              <option value="Diploma (D1-D4)"><option value="Sarjana (S1)"><option value="Magister (S2)">
+              <option value="Doktor (S3)"><option value="Lainnya">
             </datalist>
           </div>
         </div>
@@ -63,10 +58,10 @@
             <label class="block text-sm font-medium mb-1">Nama Bank</label>
             <input list="bank_list" id="nama_bank" required class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-600" placeholder="Ketik atau pilih...">
             <datalist id="bank_list">
-              <option value="BCA"> <option value="BNI"> <option value="BRI"> <option value="Bank Mandiri">
-              <option value="BTN"> <option value="Bank Syariah Indonesia (BSI)"> <option value="CIMB Niaga">
-              <option value="Danamon"> <option value="Permata Bank"> <option value="Maybank Indonesia">
-              <option value="OCBC NISP"> <option value="Lainnya">
+              <option value="BCA"><option value="BNI"><option value="BRI"><option value="Bank Mandiri">
+              <option value="BTN"><option value="Bank Syariah Indonesia (BSI)"><option value="CIMB Niaga">
+              <option value="Danamon"><option value="Permata Bank"><option value="Maybank Indonesia">
+              <option value="OCBC NISP"><option value="Lainnya">
             </datalist>
           </div>
           <div>
@@ -85,10 +80,10 @@
         <table class="w-full border-collapse mb-8" id="transactionTable">
           <thead>
             <tr class="bg-gray-100 text-gray-700">
-              <th class="p-3 text-left rounded-tl-2xl">Tanggal Transaksi</th>
+              <th class="p-3 text-left rounded-tl-2xl">Tanggal</th>
               <th class="p-3 text-left">Uraian Transaksi</th>
-              <th class="p-3 text-left">Jenis Transaksi</th>
-              <th class="p-3 text-left">Jumlah</th>
+              <th class="p-3 text-left">Jenis</th>
+              <th class="p-3 text-left">Jumlah (Rp)</th>
               <th class="p-3 text-center rounded-tr-2xl">Aksi</th>
             </tr>
           </thead>
@@ -97,15 +92,26 @@
 
         <button type="submit"
                 class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xl font-semibold rounded-3xl shadow-lg transition">
-          Kirim ke Google Sheets
+          Kirim Data ke Google Sheets
         </button>
       </form>
+
+      <!-- LINK GOOGLE SHEETS -->
+      <div class="mt-10 pt-6 border-t border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-700 mb-3">📊 Lihat Hasil Data di Google Sheets</h3>
+        <p class="text-sm text-gray-600 mb-4">Data yang Anda kirim akan tersimpan secara otomatis di sheet berikut:</p>
+        <a href="YOUR_GOOGLE_SHEET_LINK_HERE" 
+           target="_blank"
+           class="inline-flex items-center gap-2 px-6 py-3 bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium rounded-2xl transition">
+          🔗 Buka Google Sheets
+        </a>
+        <p class="text-xs text-gray-500 mt-3">Catatan: Pastikan sheet telah dibagikan dengan "Anyone with the link" agar bisa dilihat.</p>
+      </div>
     </div>
   </div>
 
   <script>
-    // GANTI DENGAN URL WEB APP ANDA
-    const SCRIPT_URL = "YOUR_SCRIPT_URL_HERE";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby23-UF4ns1bPMgcDx8ZJQ3yeGe1CT0YuAmHtTBNrNppifrqDqwlUnwh22ywpo1xc0ldA/exec";   // ← GANTI DENGAN WEB APP URL dari Apps Script
 
     let rowCounter = 0;
 
@@ -117,38 +123,25 @@
       tr.id = rowId;
       tr.className = "border-b hover:bg-gray-50";
       tr.innerHTML = `
-        <td class="p-3">
-          <input type="date" class="trans-date" required>
-        </td>
-        <td class="p-3">
-          <input type="text" class="trans-uraian w-full" placeholder="Contoh: Gaji bulan April" required>
-        </td>
+        <td class="p-3"><input type="date" class="trans-date w-full" required></td>
+        <td class="p-3"><input type="text" class="trans-uraian w-full" placeholder="Contoh: Transfer gaji" required></td>
         <td class="p-3">
           <div class="flex gap-1 jenis-group">
-            <button type="button" data-type="debet" 
-                    class="jenis-btn flex-1 px-4 py-2 border border-gray-300 rounded-l-2xl text-sm font-medium hover:bg-gray-100">Debet</button>
-            <button type="button" data-type="kredit" 
-                    class="jenis-btn flex-1 px-4 py-2 border border-gray-300 rounded-r-2xl text-sm font-medium hover:bg-gray-100">Kredit</button>
+            <button type="button" data-type="debet" class="jenis-btn flex-1 px-4 py-2 border border-gray-300 rounded-l-2xl text-sm font-medium">Debet</button>
+            <button type="button" data-type="kredit" class="jenis-btn flex-1 px-4 py-2 border border-gray-300 rounded-r-2xl text-sm font-medium">Kredit</button>
           </div>
         </td>
-        <td class="p-3">
-          <input type="number" class="trans-jumlah w-full" placeholder="Rp" step="0.01" required>
-        </td>
-        <td class="p-3 text-center">
-          <button type="button" onclick="removeRow('${rowId}')" 
-                  class="text-red-500 hover:text-red-700 font-medium">Hapus</button>
-        </td>
+        <td class="p-3"><input type="number" class="trans-jumlah w-full" placeholder="0" step="0.01" required></td>
+        <td class="p-3 text-center"><button type="button" onclick="removeRow('${rowId}')" class="text-red-500 hover:text-red-700">Hapus</button></td>
       `;
-
       tbody.appendChild(tr);
 
-      // Event listener untuk tombol jenis
       const buttons = tr.querySelectorAll('.jenis-btn');
       buttons.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', () => {
           buttons.forEach(b => b.classList.remove('active', 'bg-blue-600', 'text-white'));
-          this.classList.add('active', 'bg-blue-600', 'text-white');
-          tr.dataset.jenis = this.dataset.type;
+          btn.classList.add('active', 'bg-blue-600', 'text-white');
+          tr.dataset.jenis = btn.dataset.type;
         });
       });
     }
@@ -160,7 +153,6 @@
     async function handleSubmit(e) {
       e.preventDefault();
 
-      // Ambil data demografi & bank
       const personal = {
         nama_pengguna: document.getElementById('nama').value,
         tanggal_lahir: document.getElementById('tanggal_lahir').value,
@@ -172,7 +164,6 @@
         nomor_rekening: document.getElementById('nomor_rekening').value
       };
 
-      // Ambil semua transaksi
       const transactions = [];
       document.querySelectorAll('#transactionTable tbody tr').forEach(row => {
         const date = row.querySelector('.trans-date').value;
@@ -180,43 +171,41 @@
         const jumlah = parseFloat(row.querySelector('.trans-jumlah').value) || 0;
         const jenis = row.dataset.jenis || '';
 
-        if (!date || !uraian || !jenis || jumlah <= 0) return;
-
-        const tx = {
-          tanggal_transaksi: date,
-          uraian_transaksi: uraian,
-          jenis_transaksi: jenis === 'debet' ? 'Debet' : 'Kredit',
-          debet: jenis === 'debet' ? jumlah : 0,
-          kredit: jenis === 'kredit' ? jumlah : 0
-        };
-        transactions.push(tx);
+        if (date && uraian && jenis && jumlah > 0) {
+          transactions.push({
+            tanggal_transaksi: date,
+            uraian_transaksi: uraian,
+            jenis_transaksi: jenis === 'debet' ? 'Debet' : 'Kredit',
+            debet: jenis === 'debet' ? jumlah : 0,
+            kredit: jenis === 'kredit' ? jumlah : 0
+          });
+        }
       });
 
       if (transactions.length === 0) {
-        alert("Tambahkan minimal satu transaksi!");
+        alert("Harap tambahkan minimal satu transaksi!");
         return;
       }
 
-      const payload = { personal, transactions };
-
       try {
-        const res = await fetch(SCRIPT_URL, {
+        await fetch(SCRIPT_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ personal, transactions }),
           mode: "no-cors"
         });
 
         alert("✅ Data berhasil dikirim ke Google Sheets!");
         document.getElementById('dataForm').reset();
         document.querySelector("#transactionTable tbody").innerHTML = "";
+        addTransactionRow(); // tambah baris kosong baru
       } catch (err) {
+        alert("Terjadi kesalahan saat mengirim data. Pastikan SCRIPT_URL sudah benar.");
         console.error(err);
-        alert("Terjadi kesalahan. Pastikan SCRIPT_URL sudah benar.");
       }
     }
 
-    // Tambahkan satu baris transaksi kosong saat pertama load
+    // Tambah satu baris transaksi saat halaman dimuat
     window.onload = () => addTransactionRow();
   </script>
 </body>
