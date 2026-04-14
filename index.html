@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulir Data Pengguna & Transaksi Keuangan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .jenis-btn.active { background-color: #1e40af; color: white; }
+    table input, table select { @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500; }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+  <div class="max-w-4xl mx-auto p-6">
+    <div class="bg-white shadow-xl rounded-3xl p-8">
+      <h1 class="text-3xl font-bold text-center mb-2 text-blue-700">Formulir Pengumpulan Data</h1>
+      <p class="text-center text-gray-600 mb-8">Demografi • Bank • Transaksi Keuangan</p>
+
+      <form id="dataForm" onsubmit="handleSubmit(event)">
+        <!-- DATA DEMOGRAFI -->
+        <h2 class="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">1. Data Demografi</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          <div>
+            <label class="block text-sm font-medium mb-1">Nama Pengguna</label>
+            <input type="text" id="nama" required class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-600">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Tanggal Lahir</label>
+            <input type="date" id="tanggal_lahir" required class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-600">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium mb-1">Alamat</label>
+            <textarea id="alamat" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-600"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">No Telepon</label>
+            <input type="tel" id="no_telepon" required class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-600">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Email</label>
+            <input type="email" id="email" required class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-600">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Pendidikan</label>
+            <input list="pendidikan_list" id="pendidikan" required class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-600" placeholder="Ketik atau pilih...">
+            <datalist id="pendidikan_list">
+              <option value="SD / Sederajat">
+              <option value="SMP / Sederajat">
+              <option value="SMA / SMK / Sederajat">
+              <option value="Diploma (D1-D4)">
+              <option value="Sarjana (S1)">
+              <option value="Magister (S2)">
+              <option value="Doktor (S3)">
+              <option value="Lainnya">
+            </datalist>
+          </div>
+        </div>
+
+        <!-- DATA BANK -->
+        <h2 class="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">2. Data Bank</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          <div>
+            <label class="block text-sm font-medium mb-1">Nama Bank</label>
+            <input list="bank_list" id="nama_bank" required class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-600" placeholder="Ketik atau pilih...">
+            <datalist id="bank_list">
+              <option value="BCA"> <option value="BNI"> <option value="BRI"> <option value="Bank Mandiri">
+              <option value="BTN"> <option value="Bank Syariah Indonesia (BSI)"> <option value="CIMB Niaga">
+              <option value="Danamon"> <option value="Permata Bank"> <option value="Maybank Indonesia">
+              <option value="OCBC NISP"> <option value="Lainnya">
+            </datalist>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Nomor Rekening</label>
+            <input type="text" id="nomor_rekening" required class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-600">
+          </div>
+        </div>
+
+        <!-- DATA TRANSAKSI -->
+        <h2 class="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">3. Data Transaksi Keuangan</h2>
+        <button type="button" onclick="addTransactionRow()" 
+                class="mb-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl flex items-center gap-2 font-medium">
+          <span>+</span> Tambah Transaksi Baru
+        </button>
+
+        <table class="w-full border-collapse mb-8" id="transactionTable">
+          <thead>
+            <tr class="bg-gray-100 text-gray-700">
+              <th class="p-3 text-left rounded-tl-2xl">Tanggal Transaksi</th>
+              <th class="p-3 text-left">Uraian Transaksi</th>
+              <th class="p-3 text-left">Jenis Transaksi</th>
+              <th class="p-3 text-left">Jumlah</th>
+              <th class="p-3 text-center rounded-tr-2xl">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="text-sm"></tbody>
+        </table>
+
+        <button type="submit"
+                class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xl font-semibold rounded-3xl shadow-lg transition">
+          Kirim ke Google Sheets
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // GANTI DENGAN URL WEB APP ANDA
+    const SCRIPT_URL = "YOUR_SCRIPT_URL_HERE";
+
+    let rowCounter = 0;
+
+    function addTransactionRow() {
+      const tbody = document.querySelector("#transactionTable tbody");
+      const rowId = `row-${++rowCounter}`;
+
+      const tr = document.createElement("tr");
+      tr.id = rowId;
+      tr.className = "border-b hover:bg-gray-50";
+      tr.innerHTML = `
+        <td class="p-3">
+          <input type="date" class="trans-date" required>
+        </td>
+        <td class="p-3">
+          <input type="text" class="trans-uraian w-full" placeholder="Contoh: Gaji bulan April" required>
+        </td>
+        <td class="p-3">
+          <div class="flex gap-1 jenis-group">
+            <button type="button" data-type="debet" 
+                    class="jenis-btn flex-1 px-4 py-2 border border-gray-300 rounded-l-2xl text-sm font-medium hover:bg-gray-100">Debet</button>
+            <button type="button" data-type="kredit" 
+                    class="jenis-btn flex-1 px-4 py-2 border border-gray-300 rounded-r-2xl text-sm font-medium hover:bg-gray-100">Kredit</button>
+          </div>
+        </td>
+        <td class="p-3">
+          <input type="number" class="trans-jumlah w-full" placeholder="Rp" step="0.01" required>
+        </td>
+        <td class="p-3 text-center">
+          <button type="button" onclick="removeRow('${rowId}')" 
+                  class="text-red-500 hover:text-red-700 font-medium">Hapus</button>
+        </td>
+      `;
+
+      tbody.appendChild(tr);
+
+      // Event listener untuk tombol jenis
+      const buttons = tr.querySelectorAll('.jenis-btn');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          buttons.forEach(b => b.classList.remove('active', 'bg-blue-600', 'text-white'));
+          this.classList.add('active', 'bg-blue-600', 'text-white');
+          tr.dataset.jenis = this.dataset.type;
+        });
+      });
+    }
+
+    function removeRow(id) {
+      document.getElementById(id).remove();
+    }
+
+    async function handleSubmit(e) {
+      e.preventDefault();
+
+      // Ambil data demografi & bank
+      const personal = {
+        nama_pengguna: document.getElementById('nama').value,
+        tanggal_lahir: document.getElementById('tanggal_lahir').value,
+        alamat: document.getElementById('alamat').value,
+        no_telepon: document.getElementById('no_telepon').value,
+        email: document.getElementById('email').value,
+        pendidikan: document.getElementById('pendidikan').value,
+        nama_bank: document.getElementById('nama_bank').value,
+        nomor_rekening: document.getElementById('nomor_rekening').value
+      };
+
+      // Ambil semua transaksi
+      const transactions = [];
+      document.querySelectorAll('#transactionTable tbody tr').forEach(row => {
+        const date = row.querySelector('.trans-date').value;
+        const uraian = row.querySelector('.trans-uraian').value;
+        const jumlah = parseFloat(row.querySelector('.trans-jumlah').value) || 0;
+        const jenis = row.dataset.jenis || '';
+
+        if (!date || !uraian || !jenis || jumlah <= 0) return;
+
+        const tx = {
+          tanggal_transaksi: date,
+          uraian_transaksi: uraian,
+          jenis_transaksi: jenis === 'debet' ? 'Debet' : 'Kredit',
+          debet: jenis === 'debet' ? jumlah : 0,
+          kredit: jenis === 'kredit' ? jumlah : 0
+        };
+        transactions.push(tx);
+      });
+
+      if (transactions.length === 0) {
+        alert("Tambahkan minimal satu transaksi!");
+        return;
+      }
+
+      const payload = { personal, transactions };
+
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          mode: "no-cors"
+        });
+
+        alert("✅ Data berhasil dikirim ke Google Sheets!");
+        document.getElementById('dataForm').reset();
+        document.querySelector("#transactionTable tbody").innerHTML = "";
+      } catch (err) {
+        console.error(err);
+        alert("Terjadi kesalahan. Pastikan SCRIPT_URL sudah benar.");
+      }
+    }
+
+    // Tambahkan satu baris transaksi kosong saat pertama load
+    window.onload = () => addTransactionRow();
+  </script>
+</body>
+</html>
